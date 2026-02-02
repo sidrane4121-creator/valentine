@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#ff9a9e,#fecfef,#ffdde1);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+.container{
+    background:white;
+    padding:60px 40px;
+    border-radius:30px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    max-width:500px;
+    width:90%;
+    position:relative;
+}
+h1{
+    color:#ff4757;
+    font-size:2.3em;
+    margin-bottom:20px;
+    animation:heartbeat 1.5s infinite;
+}
+.emoji{
+    font-size:4em;
+    animation:float 3s infinite;
+}
+.buttons{
+    margin-top:40px;
+    height:260px;
+    position:relative;
+}
+button{
+    padding:15px 40px;
+    font-size:1.2em;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    font-weight:bold;
+    position:absolute;
+}
+#yesBtn{
+    background:linear-gradient(135deg,#ff6b6b,#ff4757);
+    color:white;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    z-index:10;
+}
+#noBtn{
+    background:linear-gradient(135deg,#95a5a6,#7f8c8d);
+    color:white;
+}
+.hidden{display:none}
+.success{
+    display:none;
+    animation:fadeIn .6s ease-in;
+}
+.success h2{
+    color:#ff4757;
+    font-size:2.4em;
+    margin:20px 0;
+}
+.hearts{
+    font-size:3em;
+    animation:heartPulse 1s infinite;
+}
+.music{
+    position:absolute;
+    bottom:15px;
+    right:20px;
+    cursor:pointer;
+    font-size:1.4em;
+}
+
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+@keyframes fadeIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+@keyframes heartPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <div id="question">
+        <div class="emoji">💖</div>
+        <h1>Will you be my Valentine Pinyaaaa? 💕</h1>
+        <p style="color:#555">I promise infinite love & hugs ❤️</p>
+
+        <div class="buttons">
+            <button id="yesBtn">Yes! 💕</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div id="success" class="success">
+        <div class="hearts">💖💕💗</div>
+        <h2>Thankuuu 😘 I Love You ❤️</h2>
+        <p style="color:#555">You are my forever 💞</p>
+        <div class="hearts">💝💓💖</div>
+    </div>
+
+    <div class="music" onclick="toggleMusic()">🎵</div>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/audio/2023/02/14/audio_0c7cbb8c8f.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const box = document.querySelector(".buttons");
+const music = document.getElementById("bgMusic");
+
+let moveTimer;
+
+// FAST RANDOM MOVEMENT
+function moveNoFast(){
+    const maxX = box.clientWidth - noBtn.offsetWidth;
+    const maxY = box.clientHeight - noBtn.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+// move on hover AND continuously
+noBtn.addEventListener("mouseover", moveNoFast);
+moveTimer = setInterval(moveNoFast, 400);
+
+// YES CLICK
+yesBtn.addEventListener("click", () => {
+    clearInterval(moveTimer);
+    document.getElementById("question").classList.add("hidden");
+    document.getElementById("success").style.display = "block";
+    confetti();
+});
+
+function toggleMusic(){
+    music.paused ? music.play() : music.pause();
+}
+
+function confetti(){
+    const colors=["#ff6b6b","#ff4757","#ffa502","#ff7979"];
+    for(let i=0;i<60;i++){
+        const c=document.createElement("div");
+        c.style.position="fixed";
+        c.style.width="10px";
+        c.style.height="10px";
+        c.style.background=colors[Math.floor(Math.random()*colors.length)];
+        c.style.left=Math.random()*window.innerWidth+"px";
+        c.style.top="-10px";
+        c.style.borderRadius="50%";
+        document.body.appendChild(c);
+        c.animate([{transform:"translateY(0)"},{transform:`translateY(${window.innerHeight}px)`}],{duration:3000});
+        setTimeout(()=>c.remove(),3000);
+    }
+}
+</script>
+</body>
+</html>
